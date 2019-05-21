@@ -32,6 +32,12 @@ export function fetchDecks() {
         });
 }
 
+export function addDeck ({ deck, key }) {
+    return AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify({
+      [key]: deck
+    }))
+  }
+
 function getDummyDecks() {
     return dummyDecks.reduce(function(map, deck) {
         map[deck.id] = deck;

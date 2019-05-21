@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./reducers";
 import middleware from './middleware'
+import NewDeck from "./components/NewDeck";
 
 function CustomStatusBar({ backgroundColor, ...props }) {
     return (
@@ -34,12 +35,15 @@ const MainNavigator = createAppContainer(
         },
         Deck: {
             screen: Deck,
-            navigationOptions: ({ navigation }) => ({
-                headerTintColor: white,
-                headerStyle: {
-                    backgroundColor: purple
-                }
-            })
+            navigationOptions: {
+                header: null
+            }
+        },
+        NewDeck: {
+            screen: NewDeck,
+            navigationOptions: {
+                header: null
+            }
         }
     })
 );

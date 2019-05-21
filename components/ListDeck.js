@@ -16,6 +16,9 @@ import { white } from "./../utils/colors";
 import { connect } from "react-redux";
 import { handleGetAllDecks } from "../actions";
 import { getAllDecksSelector } from "../selectors";
+import CustomHeader from "../components/CustomHeader";
+import { NavigationActions } from 'react-navigation'
+import { ScrollView } from "react-native-gesture-handler";
 
 class ListDeck extends Component {
     componentDidMount() {
@@ -23,45 +26,32 @@ class ListDeck extends Component {
         dispatch(handleGetAllDecks());
     }
 
+    newDeck = () => {
+        this.props.navigation.navigate('NewDeck')
+    }
+
     render() {
-        const { decks } = this.props;
+        const { decks, navigation } = this.props;
         return (
             <Container>
-                <Header>
-                    <Left>
-                        <Button transparent>
-                            <Icon name="arrow-back" />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Text style={{ color: white }}>DECKS</Text>
-                    </Body>
-                    <Right>
-                        <Button transparent>
-                            <Icon name="add" />
-                        </Button>
-                    </Right>
-                </Header>
+                <CustomHeader title={"Decks"} navigation={navigation} showBack={false}>
+                    <Button transparent onPress={this.newDeck}>
+                        <Icon name="add" />
+                    </Button>
+                </CustomHeader>
                 <Content>
-                    <Container style={{ flex: 1, justifyContent: "center" }}>
-                        {decks.map(deck => (
-                                <Card key={deck.name} style={{ flex: 1 }}>
-                                    <CardItem
-                                        style={{
-                                            flex: 1,
-                                            justifyContent: "center"
-                                        }}
-                                    >
-                                        <Body>
-                                            <Text style={{ fontSize: 30 }}>
-                                                {deck.name}
-                                            </Text>
-                                            <Text>{deck.countCards} card</Text>
-                                        </Body>
-                                    </CardItem>
-                                </Card>
-                            ))}
-                    </Container>
+                    {decks.map(deck => (
+                        <Card key={deck.id}>
+                            <CardItem>
+                                <Body style={{ flex: 1, minHeight: 150, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ fontSize: 30 }}>
+                                        {deck.name}
+                                    </Text>
+                                    <Text>{deck.countCards} card</Text>
+                                </Body>
+                            </CardItem>
+                        </Card>
+                    ))}
                 </Content>
             </Container>
         );
