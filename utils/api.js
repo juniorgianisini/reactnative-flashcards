@@ -76,10 +76,10 @@ export function addDeck(deck) {
 }
 
 export function addCard(deck, card) {
-    deck.cards.push(card.id);
+    const deck_ = {...deck, cards: deck.cards.concat([card.id])}
     let multiMerge = [
-        [deck.id, JSON.stringify(deck)],
-        [card.id, JSON.stringify(card)],
+        [DECKS_STORAGE_KEY, JSON.stringify({[deck_.id]: deck_})],
+        [CARDS_STORAGE_KEY, JSON.stringify({[card.id]: card})],
       ];
     return AsyncStorage.multiMerge(multiMerge)
 }
