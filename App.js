@@ -12,6 +12,9 @@ import { createStore } from "redux";
 import reducer from "./reducers";
 import middleware from './middleware'
 import NewDeck from "./components/NewDeck";
+import DeckDetails from './components/DeckDetails';
+import NewCard from './components/NewCard';
+import Quiz from "./components/Quiz";
 
 function CustomStatusBar({ backgroundColor, ...props }) {
     return (
@@ -33,18 +36,30 @@ const MainNavigator = createAppContainer(
                 header: null
             }
         },
-        Deck: {
-            screen: Deck,
-            navigationOptions: {
-                header: null
-            }
-        },
         NewDeck: {
             screen: NewDeck,
             navigationOptions: {
                 header: null
             }
-        }
+        },
+        DeckDetails: {
+            screen: DeckDetails,
+            navigationOptions: {
+                header: null
+            }
+        },
+        NewCard: {
+            screen: NewCard,
+            navigationOptions: {
+                header: null
+            }
+        },
+        Quiz: {
+            screen: Quiz,
+            navigationOptions: {
+                header: null
+            }
+        },
     })
 );
 

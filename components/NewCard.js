@@ -11,22 +11,30 @@ import {
 } from "native-base";
 import CustomHeader from "./CustomHeader";
 import { connect } from "react-redux";
-import { handleNewDeck } from "../actions";
+import { handleNewCard } from "../actions";
 
-class NewDeck extends Component {
+class NewCard extends Component {
     state = {
-        title: null
+        question: null,
+        answer: null
     };
 
-    onChangeTitle = text => {
+    onChangeText = (key, text) => {
         this.setState({
-            title: text
+            [key]: text
         });
     };
 
     onConfirm = () => {
         const { dispatch, navigation } = this.props;
-        dispatch(handleNewDeck({ name: this.state.title, countCards: 0 }));
+        let deck = this.props.deck;
+        
+        if (!deck && navigation) {
+            deck = navigation.getParam("deck", {});
+        }
+
+        dispatch(handleNewCard(deck, { question: this.state.question, answer: this.state.answer }));
+        
         navigation.goBack();
     };
 
@@ -36,7 +44,7 @@ class NewDeck extends Component {
         return (
             <Container>
                 <CustomHeader
-                    title={"New Deck"}
+                    title={"New Card"}
                     navigation={navigation}
                     showBack={true}
                 />
@@ -47,15 +55,18 @@ class NewDeck extends Component {
                             alignItems: "center"
                         }}
                     >
-                        <Item floatingLabel>
-                            <Label>Title</Label>
-                            <Input onChangeText={this.onChangeTitle} />
+                        <Item floatingLabel style={{ marginTop: 20 }}>
+                            <Label>Question: </Label>
+                            <Input onChangeText={(text) => this.onChangeText('question', text)} />
                         </Item>
-                        <Item>
+                        <Item floatingLabel style={{ marginTop: 20 }}>
+                            <Label>Answer: </Label>
+                            <Input onChangeText={(text) => this.onChangeText('answer', text)} />
+                        </Item>
+                        <Item style={{ marginTop: 20 }}>
                             <Button
                                 large
-                                block
-                                style={{ marginTop: 20 }}
+                                block                                
                                 onPress={this.onConfirm}
                             >
                                 <Text>Confirm</Text>
@@ -68,4 +79,4 @@ class NewDeck extends Component {
     }
 }
 
-export default connect()(NewDeck);
+export default connect()(NewCard);

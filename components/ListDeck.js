@@ -2,55 +2,47 @@ import React, { Component } from "react";
 import {
     Button,
     Container,
-    Header,
     Icon,
-    Body,
-    Left,
-    Content,
-    Text,
-    CardItem,
-    Card,
-    Right
+    Content
 } from "native-base";
-import { white } from "./../utils/colors";
 import { connect } from "react-redux";
-import { handleGetAllDecks } from "../actions";
+import { handleGetAllDecks, handleGetAllCards } from "../actions";
 import { getAllDecksSelector } from "../selectors";
 import CustomHeader from "../components/CustomHeader";
-import { NavigationActions } from 'react-navigation'
-import { ScrollView } from "react-native-gesture-handler";
+import { Deck } from "./Deck";
 
 class ListDeck extends Component {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch(handleGetAllDecks());
+        dispatch(handleGetAllCards());
     }
 
     newDeck = () => {
-        this.props.navigation.navigate('NewDeck')
+        this.props.navigation.navigate("NewDeck");
+    };
+
+    onShowDeck = (deck) => {
+        const {navigation} = this.props
+        navigation.navigate('DeckDetails', {deckId: deck.id})
     }
 
     render() {
         const { decks, navigation } = this.props;
         return (
             <Container>
-                <CustomHeader title={"Decks"} navigation={navigation} showBack={false}>
+                <CustomHeader
+                    title={"Decks"}
+                    navigation={navigation}
+                    showBack={false}
+                >
                     <Button transparent onPress={this.newDeck}>
                         <Icon name="add" />
                     </Button>
                 </CustomHeader>
                 <Content>
                     {decks.map(deck => (
-                        <Card key={deck.id}>
-                            <CardItem>
-                                <Body style={{ flex: 1, minHeight: 150, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ fontSize: 30 }}>
-                                        {deck.name}
-                                    </Text>
-                                    <Text>{deck.countCards} card</Text>
-                                </Body>
-                            </CardItem>
-                        </Card>
+                        <Deck key={deck.id} deck={deck} style={{minHeight: 100}} onPressDeck={() => this.onShowDeck(deck)} />
                     ))}
                 </Content>
             </Container>

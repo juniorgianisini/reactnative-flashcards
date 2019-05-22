@@ -1,30 +1,26 @@
-import React, { Component } from "react";
-import { Text, Container, Card, CardItem, Body, Button, Left, Header } from "native-base";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { Text, Card, CardItem, Body, View } from "native-base";
 
-export default class Deck extends Component {
-    render() {
-        return (
-            <Container>
-                <Header>
-                    <Left>
-                        <Button transparent>
-                            <Icon name="arrow-back" />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Text>DECK</Text>
-                    </Body>
-                </Header>
-                <Content>
-                    <Card>
-                        <CardItem bordered>
-                            <Body>
-                                <Text>Teste</Text>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                </Content>
-            </Container>
-        );
+export const Deck = ({ deck, children, style = {}, onPressDeck, cardMode }) => (
+    <Card {...cardMode}>
+        <CardItem button onPress={onPressDeck}>
+            <Body style={[styles.deck, style]}>
+                <Text style={styles.textDeck}>{deck.name}</Text>
+                <Text>{deck.cards.length} card</Text>
+                {children}
+            </Body>
+        </CardItem>
+    </Card>
+);
+
+const styles = StyleSheet.create({
+    deck: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    textDeck: {
+        fontSize: 30
     }
-}
+});
