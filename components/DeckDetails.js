@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, Container, Content, Text, View } from "native-base";
 import CustomHeader from "../components/CustomHeader";
-import { Deck } from "./Deck";
+import Deck from "./Deck";
 import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { getDeckById } from "../selectors";
@@ -26,7 +26,7 @@ class DeckDetails extends Component {
         return (
             <Container>
                 <CustomHeader
-                    title={deck.name}
+                    title={'Deck Details'}
                     navigation={navigation}
                     showBack={true}
                 />
@@ -37,7 +37,7 @@ class DeckDetails extends Component {
                         style={{ minHeight: 150 }}
                     />
                     <Button large bordered style={styles.buttonDeck} onPress={this.onAddCard}>
-                        <Text>Add Card</Text>
+                        <Text>Create New Question</Text>
                     </Button>
                     <Button large block style={styles.buttonDeck} onPress={this.onStartQuiz}>
                         <Text>Start Quiz</Text>

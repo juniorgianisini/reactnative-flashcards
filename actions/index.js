@@ -1,5 +1,4 @@
 import { fetchDecks, fetchCards, addDeck, addCard } from "../utils/api";
-import UUID from "uuid";
 
 export const GET_ALL_DECKS = "GET_ALL_DECKS"
 export const GET_ALL_CARDS = "GET_ALL_CARDS"
@@ -47,16 +46,12 @@ export function handleGetAllCards(){
 }
 
 export function handleNewDeck(deck) {
-    deck.id = UUID()
-    deck.cards = []
     return dispatch => {
         return addDeck(deck).then(() => dispatch(newDeck(deck)))
     }
 }
 
 export function handleNewCard(deck, card) {
-    card.id = UUID()
-    card.deckId = deck.id
     return dispatch => {
         return addCard(deck, card).then(() => dispatch(newCard(card)))
     }

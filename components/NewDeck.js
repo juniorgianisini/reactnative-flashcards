@@ -12,6 +12,7 @@ import {
 import CustomHeader from "./CustomHeader";
 import { connect } from "react-redux";
 import { handleNewDeck } from "../actions";
+import { createteDeck } from "../utils/helpers";
 
 class NewDeck extends Component {
     state = {
@@ -24,10 +25,11 @@ class NewDeck extends Component {
         });
     };
 
-    onConfirm = () => {
+    onConfirm = async () => {
         const { dispatch, navigation } = this.props;
-        dispatch(handleNewDeck({ name: this.state.title, countCards: 0 }));
-        navigation.goBack();
+        const deck = createteDeck(this.state.title)
+        await dispatch(handleNewDeck(deck));
+        navigation.navigate('DeckDetails', {deckId: deck.id})
     };
 
     render() {
@@ -58,7 +60,7 @@ class NewDeck extends Component {
                                 style={{ marginTop: 20 }}
                                 onPress={this.onConfirm}
                             >
-                                <Text>Confirm</Text>
+                                <Text>Create Deck</Text>
                             </Button>
                         </Item>
                     </Form>

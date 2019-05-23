@@ -12,6 +12,7 @@ import {
 import CustomHeader from "./CustomHeader";
 import { connect } from "react-redux";
 import { handleNewCard } from "../actions";
+import { createCard } from "../utils/helpers";
 
 class NewCard extends Component {
     state = {
@@ -25,15 +26,15 @@ class NewCard extends Component {
         });
     };
 
-    onConfirm = () => {
+    onConfirm = async () => {
         const { dispatch, navigation } = this.props;
         let deck = this.props.deck;
         
         if (!deck && navigation) {
             deck = navigation.getParam("deck", {});
         }
-
-        dispatch(handleNewCard(deck, { question: this.state.question, answer: this.state.answer }));
+        const card = createCard(deck.id, this.state.question, this.state.answer)
+        await dispatch(handleNewCard(deck, card));
         
         navigation.goBack();
     };

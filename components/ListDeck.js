@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { handleGetAllDecks, handleGetAllCards } from "../actions";
 import { getAllDecksSelector } from "../selectors";
 import CustomHeader from "../components/CustomHeader";
-import { Deck } from "./Deck";
+import Deck from "./Deck";
 
 class ListDeck extends Component {
     componentDidMount() {
