@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Animated } from "react-native";
-import { Text, Card, CardItem, Body } from "native-base";
+import { Text, Card, CardItem, Body, View } from "native-base";
 
 class Deck extends Component {
     state = {
@@ -8,15 +8,17 @@ class Deck extends Component {
     };
 
     onPressAnimation = () => {
-        const { bounceValue } = this.state
-        const { onPressDeck } = this.props
+        const { bounceValue } = this.state;
+        const { onPressDeck } = this.props;
 
-        Animated.sequence([
+        /*Animated.sequence([
             Animated.timing(bounceValue, { duration: 200, toValue: 1.04 }),
             Animated.spring(bounceValue, { toValue: 1, friction: 4 })
         ]).start(() => {
-            onPressDeck()
-        });
+            onPressDeck();
+        });*/
+
+        onPressDeck();
     };
 
     render() {
@@ -28,31 +30,55 @@ class Deck extends Component {
             cardMode
         } = this.props;
 
-        const {bounceValue} = this.state 
+        const { bounceValue } = this.state;
+        const cardLen = deck.cards.length;
 
         return (
-            <Card {...cardMode}>
-                <CardItem button={onPressDeck ? true : false} onPress={this.onPressAnimation}>
-                    <Body style={[styles.deck, style]}>
-                        <Animated.Text style={[styles.textDeck, {transform: [{scale: bounceValue}]}]}>{deck.name}</Animated.Text>
-                        <Text>{deck.cards.length} card</Text>
-                        {children}
-                    </Body>
-                </CardItem>
-            </Card>
+            <View
+                style={styles.deckMain}
+            >
+                <Card {...cardMode}>
+                    <CardItem
+                        button={onPressDeck ? true : false}
+                        onPress={this.onPressAnimation}
+                    >
+                        <Body style={[styles.deckBody, style]}>
+                            <Animated.Text
+                                style={[
+                                    styles.deckText,
+                                    { transform: [{ scale: bounceValue }] }
+                                ]}
+                            >
+                                {deck.name}
+                            </Animated.Text>
+                            <Text>
+                                {cardLen} card{cardLen > 1 && "s"}
+                            </Text>
+                            {children}
+                        </Body>
+                    </CardItem>
+                </Card>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    deck: {
+    deckMain: {
+        marginLeft: 5,
+        marginRight: 5,
+        marginBottom: 0,
+        marginTop: 5
+    },
+    deckBody: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
     },
-    textDeck: {
-        fontSize: 30
+    deckText: {
+        fontSize: 30,
+        textAlign: 'center'
     }
 });
 
-export default Deck
+export default Deck;

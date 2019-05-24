@@ -13,10 +13,13 @@ import { getCardsByDeckId } from "./../selectors/index";
 import CustomHeader from "./CustomHeader";
 import QuizCard from "./QuizCard";
 import { StyleSheet } from 'react-native';
+import { calculateScoreQuiz, generateTextByScoreQuiz, generateEmojiByScoreQuiz } from './../utils/helpers';
+import { lightGray } from "../utils/colors";
 
 class Quiz extends Component {
     state = {
-        correctCount: 0
+        correctCount: 0,
+        cardHeight: undefined
     };
 
     onNextCard = (card, response) => {
@@ -41,9 +44,19 @@ class Quiz extends Component {
         navigation.goBack();
     };
 
+    onLayoutMain = (event) => {
+        const { height } = event.nativeEvent.layout;
+        if(this.state.cardHeight){
+            return
+        }
+        this.setState({
+            cardHeight: height - (styles.quizMain.margin * 3)
+        })
+    }
 
     render() {
         const { cards, deck, navigation } = this.props;
+        const { cardHeight } = this.state;
         return (
             <Container>
                 <CustomHeader
@@ -51,7 +64,7 @@ class Quiz extends Component {
                     navigation={navigation}
                     showBack={true}
                 />
-                <View style={{ margin: 20 }}>
+                <View style={styles.quizMain} onLayout={this.onLayoutMain}>
                     <DeckSwiper
                         ref={c => (this._deckSwiper = c)}
                         dataSource={cards}
@@ -66,18 +79,25 @@ class Quiz extends Component {
                                     card={item}
                                     descIndex={`${index + 1}/${cards.length}`}
                                     onNextCard={this.onNextCard}
-                                    style={styles.quizCard}
+                                    style={[styles.quizCard, {minHeight: cardHeight}]}
                                 />
                             );
                         }}
                         renderEmpty={() => {
-                            const { correctCount } = this.state;
-                            const perc = (correctCount * 100) / cards.length;
+                            const { correctCount } = this.state
+                            const perc = calculateScoreQuiz(correctCount, cards.length)
+                            const textScore = generateTextByScoreQuiz(perc)
+                            const textEmoji = generateEmojiByScoreQuiz(perc)
                             return (
-                                <View>
+                                <View style={[styles.quizResult, {minHeight: cardHeight}]}>
+                                    <Text style={styles.titleResult}>
+                                        Result Quiz
+                                    </Text>
                                     <Text style={styles.textResult}>
-                                        In this quiz you answered {perc}% of the
-                                        questions
+                                        {textScore}
+                                    </Text>
+                                    <Text style={styles.textResultEmoji}>
+                                        {textEmoji}
                                     </Text>
                                     <View>
                                         <Button
@@ -90,7 +110,7 @@ class Quiz extends Component {
                                         </Button>
                                         <Button
                                             large
-                                            block
+                                            block                                            
                                             style={styles.buttonResult}
                                             onPress={this.onBackToDeck}
                                         >
@@ -108,21 +128,39 @@ class Quiz extends Component {
 }
 
 const styles = StyleSheet.create({
-    textResult: {
-        fontSize: 30
+    quizMain: {
+        margin: 10,
+        flex: 1,
+        backgroundColor: lightGray
     },
     quizCard: {
-        minHeight: 400,
-        elevation: 3,
-        marginLeft: 10,
-        marginRight: 10,
+        flex: 1,
+        alignSelf: 'stretch',
         elevation: 3
     },
-    buttonResult: {
+    quizResult: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    titleResult: {
+        fontSize: 40,        
+        textAlign: 'center'
+    },
+    textResult: {
+        fontSize: 30,
         marginTop: 20,
-        alignSelf: "center",
-        alignContent: "flex-end"
-    }
+        textAlign: 'center'
+    },
+    textResultEmoji: {
+        fontSize: 24,
+        marginTop: 20,
+        textAlign: 'center'
+    },
+    buttonResult: {
+        marginTop: 48,
+        alignSelf: "center"
+    },
 });
 
 function mapStateToProps(state, { navigation }) {

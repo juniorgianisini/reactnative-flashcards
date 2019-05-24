@@ -13,6 +13,7 @@ import CustomHeader from "./CustomHeader";
 import { connect } from "react-redux";
 import { handleNewCard } from "../actions";
 import { createCard } from "../utils/helpers";
+import { StyleSheet } from "react-native";
 
 class NewCard extends Component {
     state = {
@@ -29,13 +30,17 @@ class NewCard extends Component {
     onConfirm = async () => {
         const { dispatch, navigation } = this.props;
         let deck = this.props.deck;
-        
+
         if (!deck && navigation) {
             deck = navigation.getParam("deck", {});
         }
-        const card = createCard(deck.id, this.state.question, this.state.answer)
+        const card = createCard(
+            deck.id,
+            this.state.question,
+            this.state.answer
+        );
         await dispatch(handleNewCard(deck, card));
-        
+
         navigation.goBack();
     };
 
@@ -50,27 +55,37 @@ class NewCard extends Component {
                     showBack={true}
                 />
                 <Content>
-                    <Form
-                        style={{
-                            flex: 1,
-                            alignItems: "center"
-                        }}
-                    >
-                        <Item floatingLabel style={{ marginTop: 20 }}>
-                            <Label>Question: </Label>
-                            <Input onChangeText={(text) => this.onChangeText('question', text)} />
+                    <Form style={styles.formCard}>
+                        <Item floatingLabel>
+                            <Label>Question:</Label>
+                            <Input
+                                style={styles.textCardQuestion}
+                                multiline={true}
+                                maxLength={64}
+                                onChangeText={text =>
+                                    this.onChangeText("question", text)
+                                }
+                            />
                         </Item>
-                        <Item floatingLabel style={{ marginTop: 20 }}>
+                        <Item floatingLabel>
                             <Label>Answer: </Label>
-                            <Input onChangeText={(text) => this.onChangeText('answer', text)} />
+                            <Input
+                                style={styles.textCardAnswer}
+                                multiline={true}
+                                maxLength={64}
+                                onChangeText={text =>
+                                    this.onChangeText("answer", text)
+                                }
+                            />
                         </Item>
-                        <Item style={{ marginTop: 20 }}>
+                        <Item>
                             <Button
                                 large
-                                block                                
+                                block
+                                style={styles.buttonCard}
                                 onPress={this.onConfirm}
                             >
-                                <Text>Confirm</Text>
+                                <Text>Create Question</Text>
                             </Button>
                         </Item>
                     </Form>
@@ -79,5 +94,22 @@ class NewCard extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    textCardQuestion: {
+        fontSize: 30
+    },
+    textCardAnswer: {
+        fontSize: 24
+    },
+    formCard: {
+        flex: 1,
+        alignItems: "center"
+    },
+    buttonCard: {
+        marginTop: 48,
+        alignSelf: "center"
+    }
+});
 
 export default connect()(NewCard);

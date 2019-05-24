@@ -13,6 +13,7 @@ import CustomHeader from "./CustomHeader";
 import { connect } from "react-redux";
 import { handleNewDeck } from "../actions";
 import { createteDeck } from "../utils/helpers";
+import { StyleSheet } from "react-native";
 
 class NewDeck extends Component {
     state = {
@@ -21,15 +22,20 @@ class NewDeck extends Component {
 
     onChangeTitle = text => {
         this.setState({
-            title: text
+            name: text
         });
     };
 
     onConfirm = async () => {
         const { dispatch, navigation } = this.props;
-        const deck = createteDeck(this.state.title)
+        const deck = createteDeck(this.state.name);
         await dispatch(handleNewDeck(deck));
-        navigation.navigate('DeckDetails', {deckId: deck.id})
+        navigation.navigate("DeckDetails", { deckId: deck.id });
+    };
+
+    onCancel = () => {
+        const { navigation } = this.props;
+        navigation.goBack();
     };
 
     render() {
@@ -44,20 +50,22 @@ class NewDeck extends Component {
                 />
                 <Content>
                     <Form
-                        style={{
-                            flex: 1,
-                            alignItems: "center"
-                        }}
+                        style={styles.formDeck}
                     >
                         <Item floatingLabel>
-                            <Label>Title</Label>
-                            <Input onChangeText={this.onChangeTitle} />
+                            <Label>Name:</Label>
+                            <Input
+                                style={styles.textDeck}
+                                onChangeText={this.onChangeTitle}
+                                maxLength={30}
+                                multiline={true}
+                            />
                         </Item>
                         <Item>
                             <Button
                                 large
                                 block
-                                style={{ marginTop: 20 }}
+                                style={styles.buttonDeck}
                                 onPress={this.onConfirm}
                             >
                                 <Text>Create Deck</Text>
@@ -69,5 +77,19 @@ class NewDeck extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    textDeck: {
+        fontSize: 30
+    },
+    formDeck: {
+        flex: 1,
+        alignItems: "center"
+    },
+    buttonDeck: {
+        marginTop: 48,
+        alignSelf: 'center'        
+    }
+});
 
 export default connect()(NewDeck);

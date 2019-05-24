@@ -1,15 +1,11 @@
 import React, { Component } from "react";
-import {
-    Button,
-    Container,
-    Icon,
-    Content
-} from "native-base";
+import { Button, Container, Icon, Content, Text } from "native-base";
 import { connect } from "react-redux";
 import { handleGetAllDecks, handleGetAllCards } from "../actions";
 import { getAllDecksSelector } from "../selectors";
 import CustomHeader from "../components/CustomHeader";
 import Deck from "./Deck";
+import { lightGray } from './../utils/colors';
 
 class ListDeck extends Component {
     componentDidMount() {
@@ -22,10 +18,10 @@ class ListDeck extends Component {
         this.props.navigation.navigate("NewDeck");
     };
 
-    onShowDeck = (deck) => {
-        const {navigation} = this.props
-        navigation.navigate('DeckDetails', {deckId: deck.id})
-    }
+    onShowDeck = deck => {
+        const { navigation } = this.props;
+        navigation.navigate("DeckDetails", { deckId: deck.id });
+    };
 
     render() {
         const { decks, navigation } = this.props;
@@ -38,11 +34,17 @@ class ListDeck extends Component {
                 >
                     <Button transparent onPress={this.newDeck}>
                         <Icon name="add" />
+                        <Text>Create New Deck</Text>
                     </Button>
                 </CustomHeader>
-                <Content>
+                <Content contentContainerStyle={{ backgroundColor: lightGray }}>
                     {decks.map(deck => (
-                        <Deck key={deck.id} deck={deck} style={{minHeight: 100}} onPressDeck={() => this.onShowDeck(deck)} />
+                        <Deck
+                            key={deck.id}
+                            deck={deck}
+                            style={{ minHeight: 100 }}
+                            onPressDeck={() => this.onShowDeck(deck)}
+                        />
                     ))}
                 </Content>
             </Container>

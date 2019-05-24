@@ -7,26 +7,25 @@ import { connect } from "react-redux";
 import { getDeckById } from "../selectors";
 
 class DeckDetails extends Component {
-    
     onAddCard = () => {
-        const {navigation} = this.props
+        const { navigation } = this.props;
         let deck = this.props.deck;
-        navigation.navigate('NewCard', {deck})
-    }
+        navigation.navigate("NewCard", { deck });
+    };
 
     onStartQuiz = () => {
-        const {navigation} = this.props
+        const { navigation } = this.props;
         let deck = this.props.deck;
-        navigation.navigate('Quiz', {deck})
-    }
-    
+        navigation.navigate("Quiz", { deck });
+    };
+
     render() {
         const { navigation } = this.props;
         let deck = this.props.deck;
         return (
             <Container>
                 <CustomHeader
-                    title={'Deck Details'}
+                    title={"Deck Details"}
                     navigation={navigation}
                     showBack={true}
                 />
@@ -36,10 +35,21 @@ class DeckDetails extends Component {
                         cardMode={{ transparent: true }}
                         style={{ minHeight: 150 }}
                     />
-                    <Button large bordered style={styles.buttonDeck} onPress={this.onAddCard}>
+                    <Button
+                        large
+                        bordered
+                        style={styles.buttonDeck}
+                        onPress={this.onAddCard}
+                    >
                         <Text>Create New Question</Text>
                     </Button>
-                    <Button large block style={styles.buttonDeck} onPress={this.onStartQuiz}>
+                    <Button
+                        large
+                        block
+                        style={styles.buttonDeck}
+                        onPress={this.onStartQuiz}
+                        disabled={deck.cards.length == 0}
+                    >
                         <Text>Start Quiz</Text>
                     </Button>
                 </Content>
@@ -51,15 +61,14 @@ class DeckDetails extends Component {
 const styles = StyleSheet.create({
     buttonDeck: {
         marginTop: 20,
-        alignSelf: "center",
-        alignContent: "flex-end"
+        alignSelf: 'center'        
     }
 });
 
-function mapStateToProps(state, {navigation}){
+function mapStateToProps(state, { navigation }) {
     return {
         deck: getDeckById(state, navigation.getParam("deckId"))
-    }
+    };
 }
 
-export default connect(mapStateToProps)(DeckDetails)
+export default connect(mapStateToProps)(DeckDetails);

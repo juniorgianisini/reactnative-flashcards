@@ -10,34 +10,36 @@ class QuizCard extends Component {
     onCorrect = () => {
         this.setState({
             showResponse: false
-        })
+        });
         const { card } = this.props;
-        this.props.onNextCard(card, true)
-    }
+        this.props.onNextCard(card, true);
+    };
 
     onIncorrect = () => {
         this.setState({
             showResponse: false
-        })
+        });
         const { card } = this.props;
-        this.props.onNextCard(card, false)
-    }
+        this.props.onNextCard(card, false);
+    };
 
     onShowAnswer = () => {
         this.setState({
             showResponse: true
-        })
-    }
+        });
+    };
 
     render() {
         const { card, style = {}, descIndex } = this.props;
 
         const { showResponse } = this.state;
-
+        
         return (
             <Card>
                 <CardItem>
-                    <Body style={[styles.card, style]}>
+                    <View
+                        style={[styles.cardBody, ...style]}
+                    >
                         <Text style={styles.textCard}>
                             {showResponse ? card.answer : card.question}
                         </Text>
@@ -47,7 +49,7 @@ class QuizCard extends Component {
                                 <Button
                                     large
                                     success
-                                    style={styles.buttonDeck}
+                                    style={styles.buttonCard}
                                     onPress={this.onCorrect}
                                 >
                                     <Text>Correct</Text>
@@ -55,7 +57,7 @@ class QuizCard extends Component {
                                 <Button
                                     large
                                     warning
-                                    style={styles.buttonDeck}
+                                    style={styles.buttonCard}
                                     onPress={this.onIncorrect}
                                 >
                                     <Text>Incorrect</Text>
@@ -66,14 +68,14 @@ class QuizCard extends Component {
                                 <Button
                                     large
                                     bordered
-                                    style={styles.buttonDeck}
+                                    style={styles.buttonCard}
                                     onPress={this.onShowAnswer}
                                 >
                                     <Text>Show Answer</Text>
                                 </Button>
                             </View>
                         )}
-                    </Body>
+                    </View>
                 </CardItem>
             </Card>
         );
@@ -81,18 +83,18 @@ class QuizCard extends Component {
 }
 
 const styles = StyleSheet.create({
-    card: {
-        flex: 1,
+    cardBody: {
+        flexGrow: 1,
         justifyContent: "center",
         alignItems: "center"
     },
     textCard: {
-        fontSize: 30
+        fontSize: 30,
+        textAlign: "center"
     },
-    buttonDeck: {
-        marginTop: 20,
-        alignSelf: "center",
-        alignContent: "flex-end"
+    buttonCard: {
+        marginTop: 48,
+        alignSelf: "center"
     }
 });
 
