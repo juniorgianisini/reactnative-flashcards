@@ -5,16 +5,15 @@ import {
     View,
     Text,
     Button,
-    Icon,
-    Right
 } from "native-base";
 import { connect } from "react-redux";
 import { getCardsByDeckId } from "./../selectors/index";
 import CustomHeader from "./CustomHeader";
 import QuizCard from "./QuizCard";
 import { StyleSheet } from 'react-native';
-import { calculateScoreQuiz, generateTextByScoreQuiz, generateEmojiByScoreQuiz } from './../utils/helpers';
+import { calculateScoreQuiz, generateTextByScoreQuiz, generateEmojiByScoreQuiz, createResultQuiz, clearLocalNotification, setLocalNotification } from './../utils/helpers';
 import { lightGray } from "../utils/colors";
+import { handleResultQuiz } from "../actions";
 
 class Quiz extends Component {
     state = {
@@ -31,17 +30,30 @@ class Quiz extends Component {
         this._deckSwiper._root.swipeRight();
     };
 
-    onRestartQuiz = () => {
+    onRestartQuiz = (perc) => {
         this.setState({
             correctCount: 0
         });
-        const { navigation, deck } = this.props;
+        
+        const { navigation, deck, dispatch } = this.props;
+
         navigation.replace('Quiz', {deck})
+
+        dispatch(handleResultQuiz(deck, perc))
+
+        clearLocalNotification()
+            .then(setLocalNotification)
     };
 
-    onBackToDeck = () => {
-        const { navigation } = this.props;
+    onBackToDeck = (perc) => {
+        const { navigation, deck, dispatch } = this.props;
+        
         navigation.goBack();
+
+        dispatch(handleResultQuiz(deck, perc))
+
+        clearLocalNotification()
+            .then(setLocalNotification)
     };
 
     onLayoutMain = (event) => {
@@ -104,7 +116,7 @@ class Quiz extends Component {
                                             large
                                             bordered
                                             style={styles.buttonResult}
-                                            onPress={this.onRestartQuiz}
+                                            onPress={() => this.onRestartQuiz(perc)}
                                         >
                                             <Text>Restart Quiz</Text>
                                         </Button>
@@ -112,7 +124,7 @@ class Quiz extends Component {
                                             large
                                             block                                            
                                             style={styles.buttonResult}
-                                            onPress={this.onBackToDeck}
+                                            onPress={() => this.onBackToDeck(perc)}
                                         >
                                             <Text>Back to Deck</Text>
                                         </Button>

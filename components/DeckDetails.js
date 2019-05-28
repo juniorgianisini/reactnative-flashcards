@@ -5,23 +5,33 @@ import Deck from "./Deck";
 import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { getDeckById } from "../selectors";
+import { formatDate } from "../utils/helpers";
 
 class DeckDetails extends Component {
+    state = {
+        minor: 0,
+        major: 0
+    };
     onAddCard = () => {
-        const { navigation } = this.props;
-        let deck = this.props.deck;
+        const { navigation, deck } = this.props;
         navigation.navigate("NewCard", { deck });
     };
 
     onStartQuiz = () => {
-        const { navigation } = this.props;
-        let deck = this.props.deck;
+        const { navigation, deck } = this.props;
         navigation.navigate("Quiz", { deck });
     };
 
     render() {
-        const { navigation } = this.props;
-        let deck = this.props.deck;
+        const { navigation, deck } = this.props;
+
+        let stats = "0% / 0%";
+        let lastDate = "";
+        if (deck.statsQuiz) {
+            stats = `${deck.statsQuiz.minor}% / ${deck.statsQuiz.major}%`;
+            lastDate = formatDate(deck.statsQuiz.lastDate);
+        }
+
         return (
             <Container>
                 <CustomHeader
@@ -35,6 +45,12 @@ class DeckDetails extends Component {
                         cardMode={{ transparent: true }}
                         style={{ minHeight: 150 }}
                     />
+
+                    <View style={styles.stats}>
+                        <Text>{`Minor/Major Result: ${stats}`}</Text>
+                        <Text>{`Last Quiz: ${lastDate}`}</Text>
+                    </View>
+
                     <Button
                         large
                         bordered
@@ -61,7 +77,11 @@ class DeckDetails extends Component {
 const styles = StyleSheet.create({
     buttonDeck: {
         marginTop: 20,
-        alignSelf: 'center'        
+        alignSelf: "center"
+    },
+    stats: {
+        alignSelf: "center",
+        marginBottom: 20,
     }
 });
 

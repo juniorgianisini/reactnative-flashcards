@@ -15,6 +15,7 @@ import NewDeck from "./components/NewDeck";
 import DeckDetails from './components/DeckDetails';
 import NewCard from './components/NewCard';
 import Quiz from "./components/Quiz";
+import { setLocalNotification } from './utils/helpers';
 
 function CustomStatusBar({ backgroundColor, ...props }) {
     return (
@@ -70,6 +71,7 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
+        setLocalNotification();
         await Font.loadAsync({
             Roboto: require("native-base/Fonts/Roboto.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { GET_ALL_DECKS, NEW_DECK, GET_ALL_CARDS, NEW_CARD } from "../actions";
+import { GET_ALL_DECKS, NEW_DECK, GET_ALL_CARDS, NEW_CARD, CHANGE_STATS_DECK } from "../actions";
 
 function decks(state = {}, action) {
     switch (action.type) {
@@ -13,6 +13,11 @@ function decks(state = {}, action) {
                 ...state,
                 [action.deck.id]: action.deck
             };
+        case CHANGE_STATS_DECK:
+            return {
+                ...state,
+                [action.deck.id]: {...state[action.deck.id], statsQuiz: {...action.deck.statsQuiz}}
+            }
         case NEW_CARD:
             return {
                 ...state,

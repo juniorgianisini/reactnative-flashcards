@@ -66,7 +66,7 @@ export function fetchCards() {
     });
 }
 
-export function addDeck(deck) {
+export function persistDeck(deck) {
     return AsyncStorage.mergeItem(
         DECKS_STORAGE_KEY,
         JSON.stringify({
@@ -75,13 +75,13 @@ export function addDeck(deck) {
     );
 }
 
-export function addCard(deck, card) {
-    const deck_ = {...deck, cards: deck.cards.concat([card.id])}
+export function persistCard(deck, card) {
+    const deck_ = { ...deck, cards: deck.cards.concat([card.id]) };
     let multiMerge = [
-        [DECKS_STORAGE_KEY, JSON.stringify({[deck_.id]: deck_})],
-        [CARDS_STORAGE_KEY, JSON.stringify({[card.id]: card})],
-      ];
-    return AsyncStorage.multiMerge(multiMerge)
+        [DECKS_STORAGE_KEY, JSON.stringify({ [deck_.id]: deck_ })],
+        [CARDS_STORAGE_KEY, JSON.stringify({ [card.id]: card })]
+    ];
+    return AsyncStorage.multiMerge(multiMerge);
 }
 
 function getDummyDecks() {
