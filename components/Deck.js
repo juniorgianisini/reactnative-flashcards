@@ -11,12 +11,12 @@ class Deck extends Component {
         const { bounceValue } = this.state;
         const { onPressDeck } = this.props;
 
-        /*Animated.sequence([
+        Animated.sequence([
             Animated.timing(bounceValue, { duration: 200, toValue: 1.04 }),
             Animated.spring(bounceValue, { toValue: 1, friction: 4 })
         ]).start(() => {
             onPressDeck();
-        });*/
+        });
 
         onPressDeck();
     };

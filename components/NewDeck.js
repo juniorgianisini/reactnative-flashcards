@@ -17,7 +17,7 @@ import { StyleSheet } from "react-native";
 
 class NewDeck extends Component {
     state = {
-        title: null
+        name: null
     };
 
     onChangeTitle = text => {
@@ -40,6 +40,7 @@ class NewDeck extends Component {
 
     render() {
         const { navigation } = this.props;
+        const { name } = this.state;
 
         return (
             <Container>
@@ -65,6 +66,7 @@ class NewDeck extends Component {
                             <Button
                                 large
                                 block
+                                disabled={name === null || name.trim() === ''}
                                 style={styles.buttonDeck}
                                 onPress={this.onConfirm}
                             >

@@ -45,7 +45,8 @@ class NewCard extends Component {
     };
 
     render() {
-        const { navigation } = this.props;
+        const { navigation } = this.props
+        const { question, answer } = this.state
 
         return (
             <Container>
@@ -82,6 +83,7 @@ class NewCard extends Component {
                             <Button
                                 large
                                 block
+                                disabled={ question === null || answer === null || question.trim() === '' || answer.trim() === '' }
                                 style={styles.buttonCard}
                                 onPress={this.onConfirm}
                             >

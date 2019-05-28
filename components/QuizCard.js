@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { Text, Card, CardItem, Body, View, Button } from "native-base";
+import { Text, Card, CardItem, View, Button } from "native-base";
 
 class QuizCard extends Component {
     state = {
