@@ -1,4 +1,4 @@
-# React Readable
+# React Native FlashCards
 
 O projeto FlashCards foi construído para o trabalho de finalização do curso de 'React Native' realizado na Udacity. Este aplicativo permite criar baralhos com questões para serem respondidas em um Quiz. 
 
