@@ -4,7 +4,7 @@ O projeto FlashCards foi construído para o trabalho de finalização do curso d
 
 No desenvolvimento foram utilizadas as tecnologias React Native, Native Base, Expo, Redux, Redux-thunk.
 
-Mesmo sabendo que as Api(s) são compatíveis com IOS e Android, a aplicação foi testada efetivamente apenas na plataforma Android.
+Mesmo sabendo que as API(s) são compatíveis com IOS e Android, a aplicação foi testada apenas na plataforma Android.
 
 # Instalação
 
