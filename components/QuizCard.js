@@ -7,22 +7,33 @@ class QuizCard extends Component {
         showResponse: false
     };
 
+    /**
+     * Callback disparado quando usuário confirma um acerto de uma questão
+     */
     onCorrect = () => {
         this.setState({
             showResponse: false
         });
         const { card } = this.props;
+        //Ir para o próximo cartão do baralho
         this.props.onNextCard(card, true);
     };
 
+    /**
+     * Callback disparado quando o usuário confirma que errou uma questão
+     */
     onIncorrect = () => {
         this.setState({
             showResponse: false
         });
         const { card } = this.props;
+        //Ir para o próximo cartão do baralho
         this.props.onNextCard(card, false);
     };
 
+    /**
+     * Apresentar a resposta da questão
+     */
     onShowAnswer = () => {
         this.setState({
             showResponse: true

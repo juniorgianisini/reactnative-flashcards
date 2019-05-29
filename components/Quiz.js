@@ -11,7 +11,7 @@ import { getCardsByDeckId } from "./../selectors/index";
 import CustomHeader from "./CustomHeader";
 import QuizCard from "./QuizCard";
 import { StyleSheet } from 'react-native';
-import { calculateScoreQuiz, generateTextByScoreQuiz, generateEmojiByScoreQuiz, createResultQuiz, clearLocalNotification, setLocalNotification } from './../utils/helpers';
+import { calculateScoreQuiz, generateTextByScoreQuiz, generateEmojiByScoreQuiz, clearLocalNotification, setLocalNotification } from './../utils/helpers';
 import { lightGray } from "../utils/colors";
 import { handleResultQuiz } from "../actions";
 
@@ -21,15 +21,24 @@ class Quiz extends Component {
         cardHeight: undefined
     };
 
+    /**
+     * Contabilizar o acerto da questão e apresentar a próxima
+     */
     onNextCard = (card, response) => {
         if (response) {
             this.setState({
                 correctCount: this.state.correctCount + 1
             });
         }
+        //
         this._deckSwiper._root.swipeRight();
     };
 
+    /**
+     * Gravar estatísticas do Quiz no baralho e reinicair
+     * 
+     * @param {Number} perc: 
+     */
     onRestartQuiz = (perc) => {
         this.setState({
             correctCount: 0
@@ -45,6 +54,11 @@ class Quiz extends Component {
             .then(setLocalNotification)
     };
 
+    /**
+     * Gravar estatísticas do Quiz no baralho e voltar para a tela de detalhes
+     * 
+     * @param {Number} perc: 
+     */
     onBackToDeck = (perc) => {
         const { navigation, deck, dispatch } = this.props;
         
@@ -56,6 +70,12 @@ class Quiz extends Component {
             .then(setLocalNotification)
     };
 
+    /**
+     * Existe uma certa dificuldade de ajustar o tamanho Card.
+     * Para funcionar foi necessário capturar o tamanho do layout em tempo de execução
+     * para definir um tamanho fixo no Card.
+     * 
+     */
     onLayoutMain = (event) => {
         const { height } = event.nativeEvent.layout;
         if(this.state.cardHeight){
@@ -80,7 +100,7 @@ class Quiz extends Component {
                     <DeckSwiper
                         ref={c => (this._deckSwiper = c)}
                         dataSource={cards}
-                        looping={false}
+                        looping={false}                        
                         renderItem={item => {
                             const index = cards.findIndex(
                                 card => card.id === item.id

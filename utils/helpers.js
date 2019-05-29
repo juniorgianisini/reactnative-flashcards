@@ -4,6 +4,11 @@ import { AsyncStorage } from "react-native";
 
 const NOTIFICATION_KEY = "FlashCards:notifications";
 
+/**
+ * Criar um objeto de baralho
+ * 
+ * @param {String} name 
+ */
 export function createteDeck(name) {
     return {
         id: UUID(),
@@ -17,6 +22,13 @@ export function createteDeck(name) {
     };
 }
 
+/**
+ * Criar um objeto de carta.
+ * 
+ * @param {String} deckId 
+ * @param {String} question 
+ * @param {String} answer 
+ */
 export function createCard(deckId, question, answer) {
     return {
         id: UUID(),
@@ -26,25 +38,20 @@ export function createCard(deckId, question, answer) {
     };
 }
 
-export function createResultQuiz(deckId, result) {
-    return {
-        id: UUID(),
-        deckId,
-        result,
-        data: getDateWithoutTime(new Date())
-    };
-}
-
-export function getDateWithoutTime(data) {
-    var d = new Date(data);
-    d.setHours(0, 0, 0, 0);
-    return d;
-}
-
+/**
+ * Criar um texto para apresentação do resultado do Quiz
+ * 
+ * @param {Number} scorePerc: Percentual de acertos no Quiz
+ */
 export function generateTextByScoreQuiz(scorePerc) {
     return `Correct answers: ${scorePerc}%`;
 }
 
+/**
+ * Criar um texto amigável 'motivacional' para apresentação do resultado do Quiz
+ * 
+ * @param {Number} scorePerc: Percentual de acertos no Quiz
+ */
 export function generateEmojiByScoreQuiz(scorePerc) {
     if (scorePerc >= 70) {
         return `😃 Congrats, Keep it up!`;
@@ -58,16 +65,28 @@ export function generateEmojiByScoreQuiz(scorePerc) {
     }`;
 }
 
+/**
+ * Calcular resultado do Quiz
+ * 
+ * @param {Number} correctCount: Número de acertos
+ * @param {Number} totalCards: Total de cartas 'questões' no Baralho
+ */
 export function calculateScoreQuiz(correctCount, totalCards) {
     return Math.round((correctCount * 100) / totalCards);
 }
 
+/**
+ * Limpar notificação pendente
+ */
 export function clearLocalNotification() {
     return AsyncStorage.removeItem(NOTIFICATION_KEY).then(
         Notifications.cancelAllScheduledNotificationsAsync
     );
 }
 
+/**
+ * Criar objeto de notificação
+ */
 function createNotification() {
     return {
         title: "Daily Quiz!",
@@ -84,6 +103,9 @@ function createNotification() {
     };
 }
 
+/**
+ * Definir notificação para ser apresentada no próximo dia as 21 hrs.
+ */
 export function setLocalNotification() {
     AsyncStorage.getItem(NOTIFICATION_KEY)
         .then(JSON.parse)
@@ -118,6 +140,11 @@ export function setLocalNotification() {
         });
 }
 
+/**
+ * Formatar data
+ * 
+ * @param {Date} timestamp 
+ */
 export function formatDate(timestamp) {
     const d = new Date(timestamp);
     const time = d.toLocaleTimeString("en-US");

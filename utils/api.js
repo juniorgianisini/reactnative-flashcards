@@ -42,6 +42,9 @@ const dummyCards = [
     }
 ];
 
+/**
+ * Retornar lista de baralhos de AsyncStorage
+ */
 export function fetchDecks() {
     return AsyncStorage.getItem(DECKS_STORAGE_KEY).then(result => {
         if (result && result !== "{}") {
@@ -54,6 +57,9 @@ export function fetchDecks() {
     });
 }
 
+/**
+ * Retornar lista de cartas 'questões' de AsyncStorage
+ */
 export function fetchCards() {
     return AsyncStorage.getItem(CARDS_STORAGE_KEY).then(result => {
         if (result && result !== "{}") {
@@ -66,6 +72,11 @@ export function fetchCards() {
     });
 }
 
+/**
+ * Gravar no AsyncStorage mudanças realizadas em um determinado baralho
+ * 
+ * @param {Object} deck 
+ */
 export function persistDeck(deck) {
     return AsyncStorage.mergeItem(
         DECKS_STORAGE_KEY,
@@ -75,6 +86,13 @@ export function persistDeck(deck) {
     );
 }
 
+/**
+ * 
+ * Gravar no AsyncStorage mudanças realizadas em uma determinada questão
+ * 
+ * @param {Object} deck 
+ * @param {Object} card 
+ */
 export function persistCard(deck, card) {
     const deck_ = { ...deck, cards: deck.cards.concat([card.id]) };
     let multiMerge = [
@@ -84,6 +102,9 @@ export function persistCard(deck, card) {
     return AsyncStorage.multiMerge(multiMerge);
 }
 
+/**
+ * Retornar lista fixa de baralhos para inicialização do App
+ */
 function getDummyDecks() {
     return dummyDecks.reduce(function(map, deck) {
         map[deck.id] = deck;
@@ -91,9 +112,13 @@ function getDummyDecks() {
     }, {});
 }
 
+/**
+ * Retornar lista fixa de cartas para inicialização do App
+ */
 function getDummyCards() {
     return dummyCards.reduce(function(map, card) {
         map[card.id] = card;
         return map;
     }, {});
 }
+  
